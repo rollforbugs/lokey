@@ -10,13 +10,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
 
-import java.nio.CharBuffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Logger;
 
 /**
  * Created by jonathan on 4/8/17.
@@ -27,44 +22,68 @@ public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyb
     private KeyboardView kv;
     private Keyboard keyboard;
 
-    private int shuffleAmount = 6;
+    private int swappiness = 1;
     private Random rand = new Random();
     private boolean caps = false;
     private String keys = "abcdefghijklmnopqrstuvwxyz1234567890-=#@ :.,/";
 
     private void swapKeys(Keyboard.Key k1, Keyboard.Key k2) {
-        int tmpX = k1.x;
-        int tmpY = k1.y;
-        int tmpWidth = k1.width;
-        int tmpHeight = k1.height;
-        int tmpGap = k1.gap;
+        int[] codes = k1.codes;
+        Drawable icon = k1.icon;
+        Drawable iconPreview = k1.iconPreview;
+        CharSequence label = k1.label;
+        boolean modifier = k1.modifier;
+        boolean on = k1.on;
+        CharSequence popupCharacters = k1.popupCharacters;
+        int popupResId = k1.popupResId;
+        boolean pressed = k1.pressed;
+        boolean repeatable = k1.repeatable;
+        boolean sticky = k1.sticky;
+        CharSequence text = k1.text;
 
-        k1.x = k2.x;
-        k1.y = k2.y;
-        k1.width = k2.width;
-        k1.height = k2.height;
-        k1.gap = k2.gap;
+        k1.codes = k2.codes;
+        k1.icon = k2.icon;
+        k1.iconPreview = k2.iconPreview;
+        k1.label = k2.label;
+        k1.modifier = k2.modifier;
+        k1.on = k2.on;
+        k1.popupCharacters = k2.popupCharacters;
+        k1.popupResId = k2.popupResId;
+        k1.pressed = k2.pressed;
+        k1.repeatable = k2.repeatable;
+        k1.sticky = k2.sticky;
+        k1.text = k2.text;
 
-        k2.x = tmpX;
-        k2.y = tmpY;
-        k2.width = tmpWidth;
-        k2.height = tmpHeight;
-        k2.gap = tmpGap;
+        k2.codes = codes;
+        k2.icon = icon;
+        k2.iconPreview = iconPreview;
+        k2.label = label;
+        k2.modifier = modifier;
+        k2.on = on;
+        k2.popupCharacters = popupCharacters;
+        k2.popupResId = popupResId;
+        k2.pressed = pressed;
+        k2.repeatable = repeatable;
+        k2.sticky = sticky;
+        k2.text = text;
     }
 
-    private void shuffleKeyboard(Keyboard kbd) {
-        List<Keyboard.Key> keys = kbd.getKeys();
+    private void shuffleKeyboard() {
+        List<Keyboard.Key> keys = keyboard.getKeys();
         int nKeys = keys.size();
-        for (int i = 0; i < shuffleAmount; i++) {
-            swapKeys(keys.get(rand.nextInt(nKeys)), keys.get(rand.nextInt(nKeys)));
+        for (int i = 0; i < swappiness; i++) {
+            Keyboard.Key k1 = keys.get(rand.nextInt(nKeys));
+            Keyboard.Key k2 = keys.get(rand.nextInt(nKeys));
+            swapKeys(k1, k2);
         }
+        kv.invalidateAllKeys();
     }
 
     @Override
     public View onCreateInputView() {
         kv = (KeyboardView)getLayoutInflater().inflate(R.layout.keyboard, null);
         keyboard = new Keyboard(this, R.xml.qwerty);
-        shuffleKeyboard(keyboard);
+        shuffleKeyboard();
         kv.setKeyboard(keyboard);
         kv.setOnKeyboardActionListener(this);
         return kv;
@@ -88,14 +107,21 @@ public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyb
         }
     }
 
+    private String charToString(int c) {
+        if (c >= 0x20 && c <= 0x7e) {
+            return String.format("%c", c);
+        }
+        return String.format("%02x", c);
+    }
+
     @Override
     public void onPress(int primaryCode) {
-
+        Log.e("ShittyKeyboard", "KEY DOWN: " + charToString(primaryCode));
     }
 
     @Override
     public void onRelease(int primaryCode) {
-
+        Log.e("ShittyKeyboard", "KEY UP: " + charToString(primaryCode));
     }
 
     @Override
@@ -119,8 +145,7 @@ public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyb
                         code = Character.toUpperCase(code);
                 ic.commitText(String.valueOf(code), 1);
         }
-        shuffleKeyboard(keyboard);
-        kv.invalidateAllKeys();
+        shuffleKeyboard();
     }
 
     @Override
