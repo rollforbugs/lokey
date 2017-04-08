@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Shitty Keyboard</string>
+    <string name="shitty_ime">Shitty IME</string>
+    <string name="subtype_en_US">English (Shitty)</string>
 </resources>
