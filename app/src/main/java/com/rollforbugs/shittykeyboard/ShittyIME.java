@@ -8,6 +8,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
 
+import java.nio.CharBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by jonathan on 4/8/17.
  */
@@ -16,12 +22,25 @@ public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyb
 
     private KeyboardView kv;
     private Keyboard keyboard;
+
     private boolean caps = false;
+    private String keys = "abcdefghijklmnopqrstuvwxyz1234567890-=#@ :.,/";
 
     @Override
     public View onCreateInputView() {
+        // Create a list of the keys and randomize order
+        ArrayList<Character> keyList = new ArrayList<>();
+        for (Character key : keys.toCharArray()) {
+            keyList.add(key);
+        }
+        Collections.shuffle(keyList);
+        StringBuffer sb = new StringBuffer();
+        for (Character key : keyList) {
+            sb.append(key);
+        }
+
         kv = (KeyboardView)getLayoutInflater().inflate(R.layout.keyboard, null);
-        keyboard = new Keyboard(this, R.xml.qwerty);
+        keyboard = new Keyboard(this, R.xml.template, sb, 10, 2);
         kv.setKeyboard(keyboard);
         kv.setOnKeyboardActionListener(this);
         return kv;
