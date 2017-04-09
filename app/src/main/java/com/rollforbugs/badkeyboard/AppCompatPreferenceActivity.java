@@ -1,4 +1,4 @@
-package com.rollforbugs.shittykeyboard;
+package com.rollforbugs.badkeyboard;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

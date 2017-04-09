@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.rollforbugs.shittykeyboard">
+    package="com.rollforbugs.badkeyboard">
 
     <application
         android:allowBackup="true"
@@ -10,8 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name=".ShittyIME"
-            android:label="@string/shitty_ime"
+            android:name="com.rollforbugs.badkeyboard.IME"
+            android:label="@string/ime_name"
             android:permission="android.permission.BIND_INPUT_METHOD">
             <meta-data
                 android:name="android.view.im"
@@ -23,7 +23,7 @@
         </service>
 
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.rollforbugs.badkeyboard.SettingsActivity"
             android:label="@string/title_activity_settings">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

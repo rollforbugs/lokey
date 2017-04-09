@@ -1,4 +1,4 @@
-package com.rollforbugs.shittykeyboard;
+package com.rollforbugs.badkeyboard;
 
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -8,7 +8,6 @@ import android.inputmethodservice.KeyboardView;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -176,7 +175,15 @@ public class IME extends InputMethodService implements KeyboardView.OnKeyboardAc
                 break;
             case Keyboard.KEYCODE_SHIFT:
                 shift = !shift;
-                kv.getKeyboard().setShifted(shift);
+                if (kv.getKeyboard() == qwertyKeyboard) {
+                    kv.getKeyboard().setShifted(shift);
+                } else {
+                    if (shift) {
+                        kv.setKeyboard(symShiftKeyboard);
+                    } else {
+                        kv.setKeyboard(symbolsKeyboard);
+                    }
+                }
                 kv.invalidateAllKeys();
                 break;
             case Keyboard.KEYCODE_MODE_CHANGE:
@@ -194,6 +201,8 @@ public class IME extends InputMethodService implements KeyboardView.OnKeyboardAc
                 char code = (char)primaryCode;
                 if (Character.isLetter(code) && shift) {
                     code = Character.toUpperCase(code);
+                }
+                if (shift) {
                     shift = false;
                     kv.getKeyboard().setShifted(false);
                     kv.invalidateAllKeys();
