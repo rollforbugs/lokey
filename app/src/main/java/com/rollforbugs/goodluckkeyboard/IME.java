@@ -10,6 +10,7 @@ import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 
 import java.util.List;
@@ -28,6 +29,8 @@ public class IME extends InputMethodService implements KeyboardView.OnKeyboardAc
     private Keyboard symbolsKeyboard;
     private Keyboard symShiftKeyboard;
     private SharedPreferences prefs;
+
+    private InputConnection ic = null;
 
     private Random rand = new Random();
     private boolean shift = false;
@@ -194,6 +197,9 @@ public class IME extends InputMethodService implements KeyboardView.OnKeyboardAc
                 }
                 break;
             case Keyboard.KEYCODE_DONE:
+                if (prefs.getBoolean("pref_signature_enable", false)) {
+                    ic.commitText(prefs.getString("pref_signature_text", ""), 0);
+                }
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
                 break;
             default:
