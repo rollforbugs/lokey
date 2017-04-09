@@ -173,6 +173,7 @@ public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyb
                 caps = !caps;
                 keyboard.setShifted(caps);
                 kv.invalidateAllKeys();
+                break;
             case Keyboard.KEYCODE_DONE:
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
                 break;
