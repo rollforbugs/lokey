@@ -43,14 +43,6 @@ public class SettingsActivity extends Activity {
             // Load the preferences from an XML resource
             addPreferencesFromResource(R.xml.pref);
         }
-
-        // @Override
-        // public View onCreateView(LayoutInflater inflater, ViewGroup
-        // container, Bundle savedInstanceState) {
-        // View rootView = inflater.inflate(R.layout.fragment_app_settings,
-        // container, false);
-        // return rootView;
-        // }
     }
 
 
