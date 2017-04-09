@@ -1,4 +1,4 @@
-package com.rollforbugs.goodluckkeyboard;
+package com.rollforbugs.lokey;
 
 
 import android.app.Activity;
