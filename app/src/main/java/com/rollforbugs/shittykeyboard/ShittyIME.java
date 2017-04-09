@@ -6,7 +6,9 @@ import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -20,6 +22,8 @@ import java.util.Random;
  */
 
 public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyboardActionListener {
+
+    private static MediaPlayer[] mediaEight = new MediaPlayer[7];
 
     private KeyboardView kv;
     private Keyboard keyboard;
@@ -81,8 +85,29 @@ public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyb
         kv.invalidateAllKeys();
     }
 
+    private void initializeMedia() {
+        mediaEight[0] = MediaPlayer.create(getApplicationContext(), R.raw.eight_1);
+        mediaEight[1] = MediaPlayer.create(getApplicationContext(), R.raw.eight_2);
+        mediaEight[2] = MediaPlayer.create(getApplicationContext(), R.raw.eight_3);
+        mediaEight[3] = MediaPlayer.create(getApplicationContext(), R.raw.eight_4);
+        mediaEight[4] = MediaPlayer.create(getApplicationContext(), R.raw.eight_5);
+        mediaEight[5] = MediaPlayer.create(getApplicationContext(), R.raw.eight_7);
+        mediaEight[6] = MediaPlayer.create(getApplicationContext(), R.raw.eight_8);
+
+        mediaEight[0].setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaEight[1].setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaEight[2].setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaEight[3].setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaEight[4].setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaEight[5].setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaEight[6].setAudioStreamType(AudioManager.STREAM_MUSIC);
+    }
+
+
+
     @Override
     public View onCreateInputView() {
+        initializeMedia();
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         keyboard = new Keyboard(this, R.xml.qwerty);
@@ -95,15 +120,23 @@ public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyb
     private void playClick(int keyCode) {
         AudioManager am = (AudioManager)getSystemService(AUDIO_SERVICE);
         switch (keyCode) {
-            case 32:
+            case 0x20:
                 am.playSoundEffect(AudioManager.FX_KEYPRESS_SPACEBAR);
                 break;
             case Keyboard.KEYCODE_DONE:
-            case 10:
+            case 0x0a:
                 am.playSoundEffect(AudioManager.FX_KEYPRESS_RETURN);
                 break;
             case Keyboard.KEYCODE_DELETE:
                 am.playSoundEffect(AudioManager.FX_KEYPRESS_DELETE);
+                break;
+            case 0x38:
+                if (prefs.getBoolean("pref_eight_enable", false)) {
+                    // Play random "eight" sound
+                    MediaPlayer mPlayer = mediaEight[rand.nextInt(mediaEight.length)];
+                    mPlayer.seekTo(0);
+                    mPlayer.start();
+                }
                 break;
             default:
                 am.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD);
@@ -119,12 +152,12 @@ public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyb
 
     @Override
     public void onPress(int primaryCode) {
-        Log.e("ShittyKeyboard", "KEY DOWN: " + charToString(primaryCode));
+        Log.d("ShittyKeyboard", "KEY DOWN: " + charToString(primaryCode));
     }
 
     @Override
     public void onRelease(int primaryCode) {
-        Log.e("ShittyKeyboard", "KEY UP: " + charToString(primaryCode));
+        Log.d("ShittyKeyboard", "KEY UP: " + charToString(primaryCode));
     }
 
     @Override
