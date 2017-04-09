@@ -21,7 +21,7 @@ import java.util.Random;
  * Created by jonathan on 4/8/17.
  */
 
-public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyboardActionListener {
+public class IME extends InputMethodService implements KeyboardView.OnKeyboardActionListener {
 
     private static MediaPlayer[] mediaEight = new MediaPlayer[7];
 
