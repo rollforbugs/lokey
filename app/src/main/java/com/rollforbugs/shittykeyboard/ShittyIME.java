@@ -1,10 +1,12 @@
 package com.rollforbugs.shittykeyboard;
 
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.media.AudioManager;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -21,11 +23,10 @@ public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyb
 
     private KeyboardView kv;
     private Keyboard keyboard;
+    private SharedPreferences prefs;
 
-    private int swappiness = 1;
     private Random rand = new Random();
     private boolean caps = false;
-    private String keys = "abcdefghijklmnopqrstuvwxyz1234567890-=#@ :.,/";
 
     private void swapKeys(Keyboard.Key k1, Keyboard.Key k2) {
         int[] codes = k1.codes;
@@ -71,6 +72,7 @@ public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyb
     private void shuffleKeyboard() {
         List<Keyboard.Key> keys = keyboard.getKeys();
         int nKeys = keys.size();
+        int swappiness = Integer.parseInt(prefs.getString("pref_swap_swappiness", "1"));
         for (int i = 0; i < swappiness; i++) {
             Keyboard.Key k1 = keys.get(rand.nextInt(nKeys));
             Keyboard.Key k2 = keys.get(rand.nextInt(nKeys));
@@ -81,9 +83,10 @@ public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyb
 
     @Override
     public View onCreateInputView() {
-        kv = (KeyboardView)getLayoutInflater().inflate(R.layout.keyboard, null);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
         keyboard = new Keyboard(this, R.xml.qwerty);
-        shuffleKeyboard();
+        kv = (KeyboardView)getLayoutInflater().inflate(R.layout.keyboard, null);
         kv.setKeyboard(keyboard);
         kv.setOnKeyboardActionListener(this);
         return kv;
@@ -128,6 +131,7 @@ public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyb
     public void onKey(int primaryCode, int[] keyCodes) {
         InputConnection ic = getCurrentInputConnection();
         playClick(primaryCode);
+
         switch (primaryCode) {
             case Keyboard.KEYCODE_DELETE:
                 ic.deleteSurroundingText(1, 0);
@@ -145,7 +149,9 @@ public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyb
                         code = Character.toUpperCase(code);
                 ic.commitText(String.valueOf(code), 1);
         }
-        shuffleKeyboard();
+
+        if (prefs.getBoolean("pref_swap_enable", false))
+                shuffleKeyboard();
     }
 
     @Override

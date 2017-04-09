@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Server">
+    <PreferenceCategory android:title="Swapping">
 
+        <SwitchPreference
+            android:key="pref_swap_enable"
+            android:title="Enable Swapping"
+            android:summaryOff="Swapping is disabled"
+            android:summaryOn="Keys will be swapped randomly"
+            android:disableDependentsState="false" />
         <EditTextPreference
-            android:defaultValue=" "
-            android:key="pref_ip"
-            android:title="Server IP" />
-        <EditTextPreference
+            android:key="pref_swap_swappiness"
+            android:title="Swappiness"
+            android:inputType="number"
             android:numeric="integer"
-            android:defaultValue="16834"
-            android:key="pref_port"
-            android:title="Server Port" />
+            android:defaultValue="1"
+            android:dependency="pref_swap_enable" />
 
     </PreferenceCategory>
 </PreferenceScreen>

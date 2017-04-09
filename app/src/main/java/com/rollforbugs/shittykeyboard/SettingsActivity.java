@@ -19,12 +19,6 @@ import android.preference.PreferenceFragment;
  */
 public class SettingsActivity extends Activity {
 
-
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +27,6 @@ public class SettingsActivity extends Activity {
             getFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
         }
     }
-
 
     /**
      * A placeholder fragment containing a simple view.
