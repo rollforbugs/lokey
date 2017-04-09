@@ -113,6 +113,11 @@ public class IME extends InputMethodService implements KeyboardView.OnKeyboardAc
         initializeMedia();
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+        int seed = Integer.parseInt(prefs.getString("pref_rand_seed", "-1"));
+        if (seed != -1) {
+            rand = new Random(seed);
+        }
+
         qwertyKeyboard = new Keyboard(this, R.xml.qwerty);
         symbolsKeyboard = new Keyboard(this, R.xml.symbols);
         symShiftKeyboard = new Keyboard(this, R.xml.symbols_shift);
