@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.rollforbugs.badkeyboard">
+    package="com.rollforbugs.goodluckkeyboard">
 
     <application
         android:allowBackup="true"
@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name="com.rollforbugs.badkeyboard.IME"
+            android:name="com.rollforbugs.goodluckkeyboard.IME"
             android:label="@string/ime_name"
             android:permission="android.permission.BIND_INPUT_METHOD">
             <meta-data
@@ -23,7 +23,7 @@
         </service>
 
         <activity
-            android:name="com.rollforbugs.badkeyboard.SettingsActivity"
+            android:name="com.rollforbugs.goodluckkeyboard.SettingsActivity"
             android:label="@string/title_activity_settings">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

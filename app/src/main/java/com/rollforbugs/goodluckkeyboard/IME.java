@@ -1,4 +1,4 @@
-package com.rollforbugs.badkeyboard;
+package com.rollforbugs.goodluckkeyboard;
 
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -8,7 +8,6 @@ import android.inputmethodservice.KeyboardView;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
@@ -156,12 +155,12 @@ public class IME extends InputMethodService implements KeyboardView.OnKeyboardAc
 
     @Override
     public void onPress(int primaryCode) {
-        Log.d("ShittyKeyboard", "KEY DOWN: " + charToString(primaryCode));
+
     }
 
     @Override
     public void onRelease(int primaryCode) {
-        Log.d("ShittyKeyboard", "KEY UP: " + charToString(primaryCode));
+
     }
 
     @Override

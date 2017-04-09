@@ -1,4 +1,4 @@
-package com.rollforbugs.badkeyboard;
+package com.rollforbugs.goodluckkeyboard;
 
 import org.junit.Test;
 

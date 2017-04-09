@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">Bad Keyboard</string>
-    <string name="ime_name">Bad Keyboard</string>
-    <string name="subtype_en_US">English (Bad)</string>
+    <string name="app_name">Good Luck Keyboard</string>
+    <string name="ime_name">Good Luck Keyboard</string>
+    <string name="subtype_en_US">English (Lucky?)</string>
 
-    <string name="title_activity_settings">Bad Keyboard Settings</string>
+    <string name="title_activity_settings">Good Luck Keyboard Settings</string>
 
     <string name="pref_swap_section_title">Swapping</string>
     <string name="pref_swap_enable_title">Enable Swapping</string>
@@ -19,5 +19,5 @@
     <string name="pref_signature_section_title">Signature</string>
     <string name="pref_signature_enable_title">Enable Signature</string>
     <string name="pref_signature_text_title">Signature Text</string>
-    <string name="pref_signature_text_default">Made with Bad Keyboard™</string>
+    <string name="pref_signature_text_default">Made with Good Luck Keyboard™</string>
 </resources>
