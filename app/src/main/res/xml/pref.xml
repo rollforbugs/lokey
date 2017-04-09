@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Swapping">
+    <PreferenceCategory android:title="@string/pref_swap_section_title">
 
         <SwitchPreference
             android:key="pref_swap_enable"
-            android:title="Enable Swapping"
-            android:summaryOff="Swapping is disabled"
-            android:summaryOn="Keys will be swapped randomly"
+            android:title="@string/pref_swap_enable_title"
+            android:summaryOff="@string/pref_swap_enable_off"
+            android:summaryOn="@string/pref_swap_enable_on"
             android:defaultValue="true" />
         <EditTextPreference
             android:key="pref_swap_swappiness"
-            android:title="Swappiness"
+            android:title="@string/pref_swap_swappiness_title"
             android:inputType="number"
             android:numeric="integer"
             android:defaultValue="1"
@@ -19,13 +19,28 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Crazy Eights">
+    <PreferenceCategory android:title="@string/pref_eight_section_title">
 
         <SwitchPreference
             android:key="pref_eight_enable"
-            android:title="Enable Crazy Eights"
-            android:summaryOn="Stanley, is that you?"
+            android:title="@string/pref_eight_enable_title"
+            android:summaryOn="@string/pref_eight_enable_on"
+            android:summaryOff="@string/pref_eight_enable_off"
             android:defaultValue="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_signature_section_title">
+
+        <SwitchPreference
+            android:key="pref_signature_enable"
+            android:title="@string/pref_signature_enable_title"
+            android:defaultValue="true" />
+        <EditTextPreference
+            android:key="pref_signature_text"
+            android:title="@string/pref_signature_text_title"
+            android:defaultValue="@string/pref_signature_text_default"
+            android:dependency="pref_signature_enable" />
 
     </PreferenceCategory>
 </PreferenceScreen>

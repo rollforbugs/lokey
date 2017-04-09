@@ -26,11 +26,13 @@ public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyb
     private static MediaPlayer[] mediaEight = new MediaPlayer[7];
 
     private KeyboardView kv;
-    private Keyboard keyboard;
+    private Keyboard qwertyKeyboard;
+    private Keyboard symbolsKeyboard;
+    private Keyboard symShiftKeyboard;
     private SharedPreferences prefs;
 
     private Random rand = new Random();
-    private boolean caps = false;
+    private boolean shift = false;
 
     private void swapKeys(Keyboard.Key k1, Keyboard.Key k2) {
         int[] codes = k1.codes;
@@ -73,7 +75,7 @@ public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyb
         k2.text = text;
     }
 
-    private void shuffleKeyboard() {
+    private void shuffleKeyboard(Keyboard keyboard) {
         List<Keyboard.Key> keys = keyboard.getKeys();
         int nKeys = keys.size();
         int swappiness = Integer.parseInt(prefs.getString("pref_swap_swappiness", "1"));
@@ -110,9 +112,12 @@ public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyb
         initializeMedia();
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        keyboard = new Keyboard(this, R.xml.qwerty);
+        qwertyKeyboard = new Keyboard(this, R.xml.qwerty);
+        symbolsKeyboard = new Keyboard(this, R.xml.symbols);
+        symShiftKeyboard = new Keyboard(this, R.xml.symbols_shift);
+
         kv = (KeyboardView)getLayoutInflater().inflate(R.layout.keyboard, null);
-        kv.setKeyboard(keyboard);
+        kv.setKeyboard(qwertyKeyboard);
         kv.setOnKeyboardActionListener(this);
         return kv;
     }
@@ -170,22 +175,35 @@ public class ShittyIME extends InputMethodService implements KeyboardView.OnKeyb
                 ic.deleteSurroundingText(1, 0);
                 break;
             case Keyboard.KEYCODE_SHIFT:
-                caps = !caps;
-                keyboard.setShifted(caps);
+                shift = !shift;
+                kv.getKeyboard().setShifted(shift);
                 kv.invalidateAllKeys();
+                break;
+            case Keyboard.KEYCODE_MODE_CHANGE:
+                if (kv.getKeyboard() == symbolsKeyboard || kv.getKeyboard() == symShiftKeyboard) {
+                    kv.setKeyboard(qwertyKeyboard);
+                } else {
+                    kv.setKeyboard(symbolsKeyboard);
+                    symbolsKeyboard.setShifted(false);
+                }
                 break;
             case Keyboard.KEYCODE_DONE:
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
                 break;
             default:
                 char code = (char)primaryCode;
-                if (Character.isLetter(code) && caps)
-                        code = Character.toUpperCase(code);
+                if (Character.isLetter(code) && shift) {
+                    code = Character.toUpperCase(code);
+                    shift = false;
+                    kv.getKeyboard().setShifted(false);
+                    kv.invalidateAllKeys();
+                }
                 ic.commitText(String.valueOf(code), 1);
         }
 
-        if (prefs.getBoolean("pref_swap_enable", false))
-                shuffleKeyboard();
+        if (prefs.getBoolean("pref_swap_enable", false)) {
+            shuffleKeyboard(kv.getKeyboard());
+        }
     }
 
     @Override
