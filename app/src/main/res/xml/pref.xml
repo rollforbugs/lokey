@@ -43,15 +43,4 @@
             android:dependency="pref_signature_enable" />
 
     </PreferenceCategory>
-
-    <PreferenceCategory android:title="Random">
-
-        <EditTextPreference
-            android:key="pref_rand_seed"
-            android:title="Seed"
-            android:inputType="number"
-            android:numeric="integer"
-            android:defaultValue="-1" />
-
-    </PreferenceCategory>
 </PreferenceScreen>
