@@ -8,7 +8,6 @@ import android.inputmethodservice.KeyboardView;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
 
@@ -199,7 +198,7 @@ public class IME extends InputMethodService implements KeyboardView.OnKeyboardAc
                 if (prefs.getBoolean("pref_signature_enable", false)) {
                     ic.commitText(prefs.getString("pref_signature_text", ""), 0);
                 }
-                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
+                this.sendDefaultEditorAction(false);
                 break;
             default:
                 char code = (char)primaryCode;
