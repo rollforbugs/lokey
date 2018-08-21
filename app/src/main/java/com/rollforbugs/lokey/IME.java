@@ -104,11 +104,10 @@ public class IME extends InputMethodService implements KeyboardView.OnKeyboardAc
         mediaEight[6].setAudioStreamType(AudioManager.STREAM_MUSIC);
     }
 
-
-
     @Override
     public View onCreateInputView() {
         initializeMedia();
+        PreferenceManager.setDefaultValues(this, R.xml.pref, false);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         qwertyKeyboard = new Keyboard(this, R.xml.qwerty);
@@ -195,8 +194,11 @@ public class IME extends InputMethodService implements KeyboardView.OnKeyboardAc
                 }
                 break;
             case Keyboard.KEYCODE_DONE:
-                if (prefs.getBoolean("pref_signature_enable", false)) {
-                    ic.commitText(prefs.getString("pref_signature_text", ""), 0);
+                // Disable signature feature on Shift+Done.
+                if (!kv.getKeyboard().isShifted()) {
+                    if (prefs.getBoolean("pref_signature_enable", false)) {
+                        ic.commitText(prefs.getString("pref_signature_text", ""), 0);
+                    }
                 }
                 this.sendDefaultEditorAction(false);
                 break;
