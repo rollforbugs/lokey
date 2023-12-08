@@ -12,6 +12,7 @@
         <service
             android:name="com.rollforbugs.lokey.IME"
             android:label="@string/ime_name"
+            android:exported="true"
             android:permission="android.permission.BIND_INPUT_METHOD">
             <meta-data
                 android:name="android.view.im"
@@ -24,7 +25,8 @@
 
         <activity
             android:name="com.rollforbugs.lokey.SettingsActivity"
-            android:label="@string/title_activity_settings">
+            android:label="@string/title_activity_settings"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.DEFAULT" />
